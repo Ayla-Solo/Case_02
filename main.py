@@ -389,61 +389,6 @@ def print_report(report):
         else:
             print(f"  {data}")
 
-
-# if __name__ == "__main__":
-#     # Чтение файлов с данными
-#     try:
-#         with open('666.txt', 'r', encoding='utf-8') as f:
-#             main_text = f.read()
-#
-#         # Запуск расследования
-#         report = generate_comprehensive_report(main_text, main_text, main_text)
-#
-#         # Вывод отчета
-#         print_report(report)
-#
-#         # Сохраняем все артефакты в один файл
-#         with open('result11.txt', 'w', encoding='utf-8') as f:
-#             # Финансовые данные
-#             for card in report['financial_data']['valid']:
-#                 f.write(card + '\n')
-#
-#             # Секреты
-#             for secret in report['secrets']:
-#                 f.write(secret + '\n')
-#
-#             # Системная информация
-#             for ip in report['system_info']['ip']:
-#                 f.write(ip + '\n')
-#             for file in report['system_info']['file']:
-#                 f.write(file + '\n')
-#             for email in report['system_info']['email']:
-#                 f.write(email + '\n')
-#
-#             # Декодированные сообщения
-#             for msg in report['encoded_messages']['base64']:
-#                 f.write(msg + '\n')
-#             for msg in report['encoded_messages']['hex']:
-#                 f.write(msg + '\n')
-#             for msg in report['encoded_messages']['rot13']:
-#                 f.write(msg + '\n')
-#
-#             # Нормализованные данные
-#             for phone in report['normalized_data']['phones']['valid']:
-#                 f.write(phone + '\n')
-#             for date in report['normalized_data']['dates']['normalized']:
-#                 f.write(date + '\n')
-#             for inn in report['normalized_data']['inn']['valid']:
-#                 f.write(inn + '\n')
-#             for card in report['normalized_data']['cards']['valid']:
-#                 f.write(card + '\n')
-#
-#     except FileNotFoundError as e:
-#         print(f"Ошибка: не найден файл {e.filename}")
-#         print("Убедитесь, что все файлы существуют:")
-#         print("- 666.txt")
-
-
 # __________data comparison________________
 def compare_files(file1, file2):  # сравнение файлов
     with open(file1, "r", encoding="utf-8") as f1:
@@ -469,13 +414,64 @@ def compare_files(file1, file2):  # сравнение файлов
         for line in only_in_file2:
             print(line)
 
-
-# Исправленная концовка - только сравнение файлов выводится в консоль
 if __name__ == "__main__":
-    # Эта часть уже выполнена выше, поэтому просто вызываем сравнение
+    # Чтение файлов с данными
+    try:
+        with open('666.txt', 'r', encoding='utf-8') as f:
+            main_text = f.read()
 
-    # Сравнение файлов (только это выводится в консоль)
-    for i in range(1, 2):
-        file1 = "result11.txt"
-        file2 = "result" + str(i) + ".txt"
-        compare_files(file1, file2)
+        # Запуск расследования
+        report = generate_comprehensive_report(main_text, main_text, main_text)
+
+        # Вывод отчета
+        #print_report(report)
+
+        # Сохраняем все артефакты в один файл
+        with open('result11.txt', 'w', encoding='utf-8') as f:
+            # Финансовые данные
+            for card in report['financial_data']['valid']:
+                f.write(card + '\n')
+
+            # Секреты
+            for secret in report['secrets']:
+                f.write(secret + '\n')
+
+            # Системная информация
+            for ip in report['system_info']['ip']:
+                f.write(ip + '\n')
+            for file in report['system_info']['file']:
+                f.write(file + '\n')
+            for email in report['system_info']['email']:
+                f.write(email + '\n')
+
+            # Декодированные сообщения
+            for msg in report['encoded_messages']['base64']:
+                f.write(msg + '\n')
+            for msg in report['encoded_messages']['hex']:
+                f.write(msg + '\n')
+            for msg in report['encoded_messages']['rot13']:
+                f.write(msg + '\n')
+
+            # Нормализованные данные
+            for phone in report['normalized_data']['phones']['valid']:
+                f.write(phone + '\n')
+            for date in report['normalized_data']['dates']['normalized']:
+                f.write(date + '\n')
+            for inn in report['normalized_data']['inn']['valid']:
+                f.write(inn + '\n')
+            for card in report['normalized_data']['cards']['valid']:
+                f.write(card + '\n')
+
+        # Эта часть уже выполнена выше, поэтому просто вызываем сравнение
+        # Сравнение файлов (только это выводится в консоль)
+        for i in range(1, 2):
+            file1 = "result11.txt"
+            file2 = "result" + str(i) + ".txt"
+            compare_files(file1, file2)
+
+    except FileNotFoundError as e:
+        print(f"Ошибка: не найден файл {e.filename}")
+        print("Убедитесь, что все файлы существуют:")
+        print("- 666.txt")
+
+
