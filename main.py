@@ -4,13 +4,11 @@ import codecs
 from datetime import datetime
 
 
-# ============================================================
-# РОЛЬ 1: Финансовый аналитик - поиск и валидация кредитных карт
-# ============================================================
+# role 1
 
 def luhn_check(card_number: str) -> bool:
     """
-    Проверка номера карты по алгоритму Луна
+    Checking the card number using the Luna algorithm
     """
     digits = [int(d) for d in card_number if d.isdigit()]
     checksum = 0
@@ -28,8 +26,8 @@ def luhn_check(card_number: str) -> bool:
 
 def find_and_validate_credit_cards(text):
     """
-    Ищет и проверяет номера кредитных карт в тексте
-    Возвращает {'valid': [], 'invalid': []}
+    Searches for and validates credit card numbers in text
+    Returns {'valid': [], 'invalid': []}
     """
     pattern = r'\b(?:\d[ -]?){13,19}\b'
     matches = re.findall(pattern, text)
@@ -47,10 +45,7 @@ def find_and_validate_credit_cards(text):
 
     return {"valid": valid_cards, "invalid": invalid_cards}
 
-
-# ============================================================
-# РОЛЬ 2: Специалист по секретам - поиск ключей и паролей
-# ============================================================
+# role 2
 
 PATTERNS = {
     'Generic Secret (Key/Pass)': r'(?i)(api_key|secret|password|token|auth|pwd)[\s:="\' ]+([a-zA-Z0-9_\-\.]{12,})',
@@ -63,8 +58,8 @@ PATTERNS = {
 
 def find_secrets(text):
     """
-    Ищет в тексте потенциальные секретные ключи и пароли
-    Возвращает список найденных секретов
+    Searches text for potential secret keys and passwords
+    Returns a list of found secrets
     """
     secrets = []
 
@@ -76,19 +71,17 @@ def find_secrets(text):
                 secrets.append(secret_value)
             else:
                 val = match.group(0)
-                secrets.append(val[:100])  # Обрезаем слишком длинные
+                secrets.append(val[:100])
 
-    return list(dict.fromkeys(secrets))  # Удаляем дубликаты
+    return list(dict.fromkeys(secrets))
 
 
-# ============================================================
-# РОЛЬ 3: Системный аналитик - поиск IP, файлов, email
-# ============================================================
+# role 3
 
 def find_system_info(text):
     """
-    Находит IP-адреса, имена файлов и email'ы в тексте
-    Возвращает словарь с найденными артефактами
+    Finds IP addresses, file names, and email addresses in text
+    Returns a dictionary containing the found artifacts
     """
     num = r'(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])'
     ip_pattern = r'\b(' + num + r'\.' + num + r'\.' + num + r'\.' + num + r')\b'
@@ -106,14 +99,12 @@ def find_system_info(text):
     }
 
 
-# ============================================================
-# РОЛЬ 4: Криптоаналитик - декодирование base64/hex/rot13
-# ============================================================
+# role 4
 
 def decode_messages(text):
     """
-    Находит и расшифровывает закодированные сообщения
-    Возвращает {'base64': [], 'hex': [], 'rot13': []}
+    Finds and decrypts encoded messages
+    Returns {'base64': [], 'hex': [], 'rot13': []}
     """
     result = {'base64': [], 'hex': [], 'rot13': []}
 
@@ -167,14 +158,12 @@ def decode_messages(text):
     return result
 
 
-# ============================================================
-# РОЛЬ 5: Аналитик безопасности - анализ логов на угрозы
-# ============================================================
+# role 5
 
 def analyze_logs(text):
     """
-    Анализирует логи на признаки атак
-    Возвращает словарь с найденными угрозами
+    Analyzes logs for signs of attacks
+    Returns a dictionary of detected threats
     """
     results = {
         'sql_injections': [],
@@ -198,12 +187,9 @@ def analyze_logs(text):
     return results
 
 
-# ============================================================
-# ДОПОЛНИТЕЛЬНАЯ ФУНКЦИЯ: Нормализация и валидация данных
-# ============================================================
+# role 6
 
 def validate_inn(inn):
-    """Полная валидация ИНН по ГОСТ 28147-89"""
     if not inn.isdigit():
         return False
 
@@ -227,7 +213,7 @@ def validate_inn(inn):
 
 def normalize_and_validate(text):
     """
-    Приводит данные к единому формату и проверяет их на корректность.
+    Consolidates data and checks it for correctness.
     """
     results = {
         'phones': {'valid': [], 'invalid': []},
@@ -238,7 +224,6 @@ def normalize_and_validate(text):
 
     text_lower = text.lower()
 
-    # Телефоны
     phone_patterns = [
         r'(\+?7|8|7)[\s\-\.]?(\(?\d{3}\)?)[\s\-\.]?(\d{3})[\s\-\.]?(\d{2})[\s\-\.]?(\d{2})',
         r'(\+?7|8|7)[\s\-\.]?(\d{3})[\s\-\.]?(\d{3})[\s\-\.]?(\d{4})',
@@ -270,7 +255,6 @@ def normalize_and_validate(text):
                 if invalid_phone not in results['phones']['invalid']:
                     results['phones']['invalid'].append(invalid_phone)
 
-    # Даты
     date_patterns = [
         r'(\d{1,2})\.(\d{1,2})\.(\d{4})',
         r'(\d{1,2})/(\d{1,2})/(\d{4})',
@@ -307,7 +291,6 @@ def normalize_and_validate(text):
                 if invalid_date not in results['dates']['invalid']:
                     results['dates']['invalid'].append(invalid_date)
 
-    # ИНН
     inn_pattern = r'\b(\d{10}|\d{12})\b'
     raw_inns = re.findall(inn_pattern, text)
 
@@ -319,7 +302,6 @@ def normalize_and_validate(text):
             if inn not in results['inn']['invalid']:
                 results['inn']['invalid'].append(inn)
 
-    # Карты
     card_pattern = r'\b(?:\d[ -]?){13,19}\b'
     raw_cards = re.findall(card_pattern, text)
 
@@ -333,14 +315,8 @@ def normalize_and_validate(text):
     return results
 
 
-# ============================================================
-# ГЛАВНАЯ ФУНКЦИЯ: generate_comprehensive_report
-# ============================================================
-
+# Generates a full investigation report
 def generate_comprehensive_report(main_text, log_text, messy_data):
-    """
-    Генерирует полный отчет о расследовании
-    """
     report = {
         'financial_data': find_and_validate_credit_cards(main_text),
         'secrets': find_secrets(main_text),
@@ -353,7 +329,6 @@ def generate_comprehensive_report(main_text, log_text, messy_data):
 
 
 def print_report(report):
-    """Красиво выводит отчет"""
     print("=" * 60)
     print("ОТЧЕТ ОПЕРАЦИИ 'DATA SHIELD'".center(60))
     print("=" * 60)
@@ -376,7 +351,7 @@ def print_report(report):
                 if value:
                     if isinstance(value, list):
                         print(f"  {key}: {len(value)} найдено")
-                        for item in value[:5]:  # Показываем первые 5
+                        for item in value[:5]:
                             print(f"    - {item}")
                     else:
                         print(f"  {key}: {value}")
@@ -389,8 +364,8 @@ def print_report(report):
         else:
             print(f"  {data}")
 
-# __________data comparison________________
-def compare_files(file1, file2):  # сравнение файлов
+# data comparison
+def compare_files(file1, file2):
     with open(file1, "r", encoding="utf-8") as f1:
         set1 = {line.strip() for line in f1}
 
@@ -415,28 +390,20 @@ def compare_files(file1, file2):  # сравнение файлов
             print(line)
 
 if __name__ == "__main__":
-    # Чтение файлов с данными
     try:
-        with open('666.txt', 'r', encoding='utf-8') as f:
+        file_input = input()
+        with open(file_input, 'r', encoding='utf-8') as f:
             main_text = f.read()
 
-        # Запуск расследования
         report = generate_comprehensive_report(main_text, main_text, main_text)
 
-        # Вывод отчета
-        #print_report(report)
-
-        # Сохраняем все артефакты в один файл
         with open('result11.txt', 'w', encoding='utf-8') as f:
-            # Финансовые данные
             for card in report['financial_data']['valid']:
                 f.write(card + '\n')
 
-            # Секреты
             for secret in report['secrets']:
                 f.write(secret + '\n')
 
-            # Системная информация
             for ip in report['system_info']['ip']:
                 f.write(ip + '\n')
             for file in report['system_info']['file']:
@@ -444,7 +411,6 @@ if __name__ == "__main__":
             for email in report['system_info']['email']:
                 f.write(email + '\n')
 
-            # Декодированные сообщения
             for msg in report['encoded_messages']['base64']:
                 f.write(msg + '\n')
             for msg in report['encoded_messages']['hex']:
@@ -452,7 +418,6 @@ if __name__ == "__main__":
             for msg in report['encoded_messages']['rot13']:
                 f.write(msg + '\n')
 
-            # Нормализованные данные
             for phone in report['normalized_data']['phones']['valid']:
                 f.write(phone + '\n')
             for date in report['normalized_data']['dates']['normalized']:
@@ -462,8 +427,6 @@ if __name__ == "__main__":
             for card in report['normalized_data']['cards']['valid']:
                 f.write(card + '\n')
 
-        # Эта часть уже выполнена выше, поэтому просто вызываем сравнение
-        # Сравнение файлов (только это выводится в консоль)
         for i in range(1, 2):
             file1 = "result11.txt"
             file2 = "result" + str(i) + ".txt"
@@ -472,6 +435,6 @@ if __name__ == "__main__":
     except FileNotFoundError as e:
         print(f"Ошибка: не найден файл {e.filename}")
         print("Убедитесь, что все файлы существуют:")
-        print("- 666.txt")
+
 
 
